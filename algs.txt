@@ -1,0 +1,46 @@
+F = G * ((m1 * m2)/r2)
+    where:
+        F is the force between the masses
+            newtons
+        G is the gravitational constant (6.674×10?11 N?·?(m/kg)^2);
+        m1 is the first mass;
+        m2 is the second mass;
+            both kg
+        r is the distance between the centers of the masses.
+            m
+
+okay so we have three units:
+    newtons, for force
+        1 newton is needed to accelerate 1kg 1m/s^2
+    kg, for object weight
+        this is used when creating objects
+    m, for distance
+        this is used when creating objects, and is continually updated
+
+
+algorithm:
+    scale:
+        1px = 250,000,000m
+    object representation:
+        json object
+            position
+            current vector
+            weight
+            color
+            fixed?
+    universe
+        universe is size of the screen
+        shapes can not move past edges
+        however, vectors will not be affected
+    so every step:
+        calculate positions of each object
+            convert planet distances to vectors
+                F = G((m1m2)/r^2)
+            average vectors
+                move along each vector
+                move to end point
+                update current planet vector
+        draw each object
+            size determined by mass
+            circles
+            placed on canvas

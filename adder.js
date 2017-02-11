@@ -1,0 +1,71 @@
+window.setInterval(addPlanets, 500);
+$(addPlanets);
+
+var planetsToAdd = 1;
+var planetsAdded = 1;
+function addPlanets() {
+    planetsAdded++;
+    if(planetsAdded >= planetsToAdd) {
+        removeHiddenPlanets();
+    } else {
+        planets.push(randomPlanet(false));
+        planets.push(randomPlanet(true));
+    }
+}
+
+var ticker = 0;
+function randomPlanet(left) {
+    ticker++;
+    var planet = {
+        "color": randomColor(),
+        "name": ticker,
+        "mass": randBetween(10, 50),
+        "vector": [randBetween(-1,1), randBetween(-1,1)]
+    };
+    if(left) {
+        planet.position = [0, randBetween(0, window.innerHeight)]
+    } else {
+        planet.position = [window.innerWidth, randBetween(0, window.innerHeight)]
+    }
+    return planet;
+}
+
+function randomColor() {
+    var numOfSteps = 300;
+    var step = randBetween(1,300);
+    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+    // Adam Cole, 2011-Sept-14
+    // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    var r, g, b;
+    var h = step / numOfSteps;
+    var i = ~~(h * 6);
+    var f = h * 6 - i;
+    var q = 1 - f;
+    switch(i % 6){
+        case 0: r = 1; g = f; b = 0; break;
+        case 1: r = q; g = 1; b = 0; break;
+        case 2: r = 0; g = 1; b = f; break;
+        case 3: r = 0; g = q; b = 1; break;
+        case 4: r = f; g = 0; b = 1; break;
+        case 5: r = 1; g = 0; b = q; break;
+    }
+    var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+    return (c);
+}
+
+function randBetween(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function removeHiddenPlanets() {
+    var newPlanets = [];
+    planets.forEach(function(planet){
+        if(planet.x < 0 || planet.x > window.innerWidth || planet.y < 0 || planet.y > window.innerHeight) {
+            //nothing
+        }
+        else {
+            newPlanets.push(planet);
+        }
+    });
+    planets = newPlanets;
+}
